@@ -1,59 +1,11 @@
-// HPI 1.7-V
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Sphere, MeshDistortMaterial, Environment, Float } from '@react-three/drei';
-import * as THREE from 'three';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BaseCrudService } from '@/integrations';
 import type { BallFeatures } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { ArrowRight, Check, Star, Zap, Shield, Wind } from 'lucide-react';
-
-// --- 3D Components ---
-
-function PickleballSphere({ mousePosition }: { mousePosition: { x: number; y: number } }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      // Base rotation
-      meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, state.clock.getElapsedTime() * 0.1 + mousePosition.y * 0.5, 0.1);
-      meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, state.clock.getElapsedTime() * 0.15 + mousePosition.x * 0.5, 0.1);
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <Sphere ref={meshRef} args={[1, 128, 128]} scale={2.2}>
-        <MeshDistortMaterial
-          color="#BEEB00"
-          attach="material"
-          distort={0.4}
-          speed={1.5}
-          roughness={0.15}
-          metalness={0.9}
-          bumpScale={0.02}
-          clearcoat={1}
-          clearcoatRoughness={0.1}
-        />
-      </Sphere>
-    </Float>
-  );
-}
-
-function Scene({ mousePosition }: { mousePosition: { x: number; y: number } }) {
-  return (
-    <>
-      <ambientLight intensity={0.2} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1.5} castShadow />
-      <pointLight position={[-10, -10, -10]} intensity={1} color="#E6F47A" />
-      <Environment preset="studio" />
-      <PickleballSphere mousePosition={mousePosition} />
-    </>
-  );
-}
 
 // --- UI Components ---
 
@@ -94,7 +46,6 @@ export default function HomePage() {
   const [features, setFeatures] = useState<BallFeatures[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -111,17 +62,6 @@ export default function HomePage() {
   });
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: -(e.clientY / window.innerHeight) * 2 + 1,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  useEffect(() => {
     async function loadFeatures() {
       try {
         const result = await BaseCrudService.getAll<BallFeatures>('ballfeatures');
@@ -136,7 +76,6 @@ export default function HomePage() {
   }, []);
 
   // Parallax for Hero Text
-  const heroTextY = useTransform(smoothProgress, [0, 0.2], [0, 100]);
   const heroOpacity = useTransform(smoothProgress, [0, 0.2], [1, 0]);
 
   return (
@@ -155,7 +94,6 @@ export default function HomePage() {
         <div className="relative z-10 w-full max-w-[120rem] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-8 h-full items-center">
           {/* Left Content */}
           <motion.div 
-            style={{ y: heroTextY, opacity: heroOpacity }}
             className="lg:col-span-5 flex flex-col justify-center pt-20 lg:pt-0"
           >
             <motion.div
@@ -189,11 +127,23 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
 
-          {/* Right 3D Content */}
-          <div className="lg:col-span-7 h-[50vh] lg:h-full w-full relative z-20 cursor-grab active:cursor-grabbing">
-            <Canvas camera={{ position: [0, 0, 6], fov: 45 }} dpr={[1, 2]}>
-              <Scene mousePosition={mousePosition} />
-            </Canvas>
+          {/* Right Content - Gradient Ball */}
+          <div className="lg:col-span-7 h-[50vh] lg:h-full w-full relative z-20 flex items-center justify-center">
+            <motion.div
+              animate={{ 
+                y: [0, -20, 0],
+                rotate: [0, 360]
+              }}
+              transition={{ 
+                y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                rotate: { duration: 20, repeat: Infinity, ease: "linear" }
+              }}
+              className="relative w-48 h-48 lg:w-80 lg:h-80"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-brandaccent to-primary rounded-full blur-3xl opacity-60 animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary to-brandaccent rounded-full shadow-2xl" />
+              <div className="absolute inset-2 bg-gradient-to-br from-primary/80 to-brandaccent/80 rounded-full" />
+            </motion.div>
           </div>
         </div>
 
