@@ -79,7 +79,8 @@ export default function HomePage() {
   // Parallax for Hero Text - scroll-based
   const heroOpacity = useTransform(smoothProgress, [0, 0.2], [1, 0]);
   const ballScale = useTransform(smoothProgress, [0, 0.15], [1, 0.3]);
-  const ballY = useTransform(smoothProgress, [0, 0.25], [0, 300]);
+  // Enhanced dribbling effect - ball moves down significantly as user scrolls
+  const ballY = useTransform(smoothProgress, [0, 0.3], [0, 500]);
 
   return (
     <div ref={containerRef} className="bg-background min-h-screen w-full overflow-clip selection:bg-brandaccent selection:text-secondary">
@@ -160,13 +161,13 @@ export default function HomePage() {
         </motion.div>
 
         {/* Text Layer - Higher z-index */}
-        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-          {/* Minimal Text */}
+        <div className="relative z-10 w-full h-full flex flex-col items-start justify-start pt-32 lg:pt-48">
+          {/* Minimal Text - Positioned at top */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="text-center max-w-2xl px-6"
+            className="text-left max-w-2xl px-6 lg:px-12"
           >
             <h1 className="font-heading text-5xl lg:text-7xl text-secondary-foreground leading-tight tracking-tight mb-4">
               Clean <span className="text-brandaccent">Fresh Air</span>
