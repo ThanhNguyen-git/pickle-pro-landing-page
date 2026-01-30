@@ -19,8 +19,8 @@ export default {
                 '9xl': ['8rem', { lineHeight: '1', letterSpacing: '0.05em', fontWeight: '900' }],
             },
             fontFamily: {
-                heading: "rubik-v2",
-                paragraph: "work-sans-v2"
+                heading: "'Sora', 'Inter', sans-serif",
+                paragraph: "'Inter', 'Segoe UI', sans-serif"
             },
             colors: {
                 brandaccent: '#E6F47A',

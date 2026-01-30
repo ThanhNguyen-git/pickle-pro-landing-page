@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BaseCrudService } from '@/integrations';
@@ -49,6 +49,7 @@ export default function HomePage() {
   
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const ballRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -60,6 +61,24 @@ export default function HomePage() {
     damping: 30,
     restDelta: 0.001,
   });
+
+  // Mouse tracking for ball
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (ballRef.current) {
+      const rect = ballRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const distX = (e.clientX - centerX) * 0.1;
+      const distY = (e.clientY - centerY) * 0.1;
+      
+      mouseX.set(distX);
+      mouseY.set(distY);
+    }
+  };
 
   useEffect(() => {
     async function loadFeatures() {
@@ -77,13 +96,15 @@ export default function HomePage() {
 
   // Parallax for Hero Text
   const heroOpacity = useTransform(smoothProgress, [0, 0.2], [1, 0]);
+  const ballScale = useTransform(smoothProgress, [0, 0.15], [1, 0.3]);
+  const ballY = useTransform(smoothProgress, [0, 0.15], [0, -200]);
 
   return (
     <div ref={containerRef} className="bg-background min-h-screen w-full overflow-clip selection:bg-brandaccent selection:text-secondary">
       <Header />
 
       {/* --- HERO SECTION --- */}
-      <section ref={heroRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-secondary">
+      <section ref={heroRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-secondary" onMouseMove={handleMouseMove}>
         {/* Background Atmosphere */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-primary/20 rounded-full blur-[120px] opacity-40 animate-pulse" />
@@ -91,60 +112,42 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-[url('https://static.wixstatic.com/media/7765ff_4d59690fb6a44ced8face420ff752c08~mv2.png?originWidth=1920&originHeight=1024')] opacity-[0.03] mix-blend-overlay" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[120rem] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-8 h-full items-center">
-          {/* Left Content */}
-          <motion.div 
-            className="lg:col-span-5 flex flex-col justify-center pt-20 lg:pt-0"
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+          {/* Centered Ball - Main Focus */}
+          <motion.div
+            ref={ballRef}
+            style={{ 
+              x: mouseX,
+              y: useMotionTemplate`calc(${mouseY}px + ${ballY}px)`,
+              scale: ballScale
+            }}
+            animate={{ 
+              rotate: [0, 360]
+            }}
+            transition={{ 
+              rotate: { duration: 20, repeat: Infinity, ease: "linear" }
+            }}
+            className="relative w-48 h-48 lg:w-80 lg:h-80 mb-12"
           >
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <span className="inline-block py-1 px-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-brandaccent font-heading text-xs tracking-widest uppercase mb-6">
-                Next Gen Technology
-              </span>
-              <h1 className="font-heading text-6xl lg:text-8xl xl:text-9xl text-secondary-foreground leading-[0.9] tracking-tight mb-8">
-                Clean<br />
-                <span className="text-brandaccent">Fresh Air</span><br />
-                Indoors
-              </h1>
-              <p className="font-paragraph text-lg lg:text-xl text-secondary-foreground/70 max-w-md leading-relaxed mb-10">
-                Engineered for the modern champion. Experience the perfect balance of speed, control, and durability with the world's most advanced pickleball.
-              </p>
-              
-              <div className="flex flex-wrap gap-4">
-                <a href="#features" className="group relative px-8 py-4 bg-brandaccent text-secondary rounded-full font-heading font-medium overflow-hidden transition-all hover:scale-105">
-                  <span className="relative z-10 flex items-center gap-2">
-                    Discover Features <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                </a>
-                <button className="px-8 py-4 border border-white/20 text-secondary-foreground rounded-full font-heading font-medium hover:bg-white/5 transition-colors">
-                  Watch Film
-                </button>
-              </div>
-            </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-brandaccent to-primary rounded-full blur-3xl opacity-60 animate-pulse" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary to-brandaccent rounded-full shadow-2xl" />
+            <div className="absolute inset-2 bg-gradient-to-br from-primary/80 to-brandaccent/80 rounded-full" />
           </motion.div>
 
-          {/* Right Content - Gradient Ball */}
-          <div className="lg:col-span-7 h-[50vh] lg:h-full w-full relative z-20 flex items-center justify-center">
-            <motion.div
-              animate={{ 
-                y: [0, -20, 0],
-                rotate: [0, 360]
-              }}
-              transition={{ 
-                y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                rotate: { duration: 20, repeat: Infinity, ease: "linear" }
-              }}
-              className="relative w-48 h-48 lg:w-80 lg:h-80"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary via-brandaccent to-primary rounded-full blur-3xl opacity-60 animate-pulse" />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary to-brandaccent rounded-full shadow-2xl" />
-              <div className="absolute inset-2 bg-gradient-to-br from-primary/80 to-brandaccent/80 rounded-full" />
-            </motion.div>
-          </div>
+          {/* Minimal Text Below Ball */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="text-center max-w-2xl px-6"
+          >
+            <h1 className="font-heading text-5xl lg:text-7xl text-secondary-foreground leading-tight tracking-tight mb-4">
+              Clean <span className="text-brandaccent">Fresh Air</span>
+            </h1>
+            <p className="font-paragraph text-base lg:text-lg text-secondary-foreground/60">
+              Experience next-generation air purification
+            </p>
+          </motion.div>
         </div>
 
         {/* Scroll Indicator */}
@@ -154,8 +157,12 @@ export default function HomePage() {
           transition={{ delay: 1.5, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
         >
-          <span className="text-secondary-foreground/40 text-xs font-heading tracking-widest uppercase">Scroll</span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-brandaccent to-transparent" />
+          <span className="text-secondary-foreground/40 text-xs font-heading tracking-widest uppercase">Scroll to explore</span>
+          <motion.div 
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-[1px] h-12 bg-gradient-to-b from-brandaccent to-transparent" 
+          />
         </motion.div>
       </section>
 
@@ -180,12 +187,12 @@ export default function HomePage() {
 
       {/* --- STICKY FEATURES SHOWCASE --- */}
       <section id="features" className="relative bg-secondary text-secondary-foreground py-24 lg:py-0">
-        {isLoading ? (
-          <div className="h-screen flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-brandaccent border-t-transparent rounded-full animate-spin" />
-          </div>
-        ) : features.length > 0 ? (
-          <div className="relative w-full max-w-[120rem] mx-auto">
+        <div className="relative w-full max-w-[120rem] mx-auto">
+          {isLoading ? (
+            <div className="h-screen flex items-center justify-center">
+              <div className="w-12 h-12 border-4 border-brandaccent border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : features.length > 0 ? (
             <div className="lg:flex">
               {/* Sticky Image Container */}
               <div className="hidden lg:flex lg:w-1/2 h-screen sticky top-0 items-center justify-center p-12 lg:p-24">
@@ -233,12 +240,12 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="py-32 text-center">
-            <p className="text-secondary-foreground/50">Features loading...</p>
-          </div>
-        )}
+          ) : (
+            <div className="py-32 text-center">
+              <p className="text-secondary-foreground/50">Features loading...</p>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* --- PARALLAX BREATHER --- */}
