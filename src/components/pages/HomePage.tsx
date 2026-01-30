@@ -149,7 +149,7 @@ export default function HomePage() {
         <div className="absolute inset-0 z-0">
           <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-primary/20 rounded-full blur-[120px] opacity-40 animate-pulse" />
           <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-brandaccent/10 rounded-full blur-[100px] opacity-30" />
-          <div className="absolute inset-0 bg-[url('https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=1')] opacity-[0.03] mix-blend-overlay" />
+          <div className="absolute inset-0 bg-[url('https://static.wixstatic.com/media/7765ff_4d59690fb6a44ced8face420ff752c08~mv2.png?originWidth=1920&originHeight=1024')] opacity-[0.03] mix-blend-overlay" />
         </div>
 
         <div className="relative z-10 w-full max-w-[120rem] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-8 h-full items-center">
@@ -250,7 +250,7 @@ export default function HomePage() {
                       className="absolute inset-0"
                     >
                       <Image
-                        src={features[activeFeatureIndex]?.featureImage || "https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=2"}
+                        src={features[activeFeatureIndex]?.featureImage || "https://static.wixstatic.com/media/7765ff_0d764ba6fd504b5e99a802b62e20be20~mv2.png?originWidth=768&originHeight=768"}
                         alt={features[activeFeatureIndex]?.featureTitle || "Feature Image"}
                         className="w-full h-full object-cover"
                       />
@@ -299,7 +299,7 @@ export default function HomePage() {
             className="absolute inset-0"
           >
             <Image
-              src="https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=3"
+              src="https://static.wixstatic.com/media/7765ff_f2aff30f17874817b771762bfe0dc0c7~mv2.png?originWidth=1920&originHeight=1152"
               alt="Pickleball Lifestyle"
               className="w-full h-full object-cover opacity-40 scale-110"
             />
@@ -432,7 +432,7 @@ function FeatureTextBlock({ feature, index, onInView }: { feature: BallFeatures;
         {/* Mobile Image Fallback */}
         <div className="lg:hidden mt-12 rounded-2xl overflow-hidden aspect-video relative">
            <Image
-              src={feature.featureImage || "https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=4"}
+              src={feature.featureImage || "https://static.wixstatic.com/media/7765ff_2b6cbd62ff6c4e7ca97dfc5f5af45686~mv2.png?originWidth=768&originHeight=768"}
               alt={feature.featureTitle || "Feature"}
               className="w-full h-full object-cover"
             />
