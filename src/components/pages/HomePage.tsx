@@ -62,24 +62,6 @@ export default function HomePage() {
     restDelta: 0.001,
   });
 
-  // Mouse tracking for ball
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (ballRef.current) {
-      const rect = ballRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      const distX = (e.clientX - centerX) * 0.1;
-      const distY = (e.clientY - centerY) * 0.1;
-      
-      mouseX.set(distX);
-      mouseY.set(distY);
-    }
-  };
-
   useEffect(() => {
     async function loadFeatures() {
       try {
@@ -94,17 +76,17 @@ export default function HomePage() {
     loadFeatures();
   }, []);
 
-  // Parallax for Hero Text
+  // Parallax for Hero Text - scroll-based
   const heroOpacity = useTransform(smoothProgress, [0, 0.2], [1, 0]);
   const ballScale = useTransform(smoothProgress, [0, 0.15], [1, 0.3]);
-  const ballY = useTransform(smoothProgress, [0, 0.15], [0, -200]);
+  const ballY = useTransform(smoothProgress, [0, 0.25], [0, 300]);
 
   return (
     <div ref={containerRef} className="bg-background min-h-screen w-full overflow-clip selection:bg-brandaccent selection:text-secondary">
       <Header />
 
       {/* --- HERO SECTION --- */}
-      <section ref={heroRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-secondary" onMouseMove={handleMouseMove}>
+      <section ref={heroRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-secondary">
         {/* Background Atmosphere */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-primary/20 rounded-full blur-[120px] opacity-40 animate-pulse" />
@@ -112,29 +94,74 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-[url('https://static.wixstatic.com/media/7765ff_4d59690fb6a44ced8face420ff752c08~mv2.png?originWidth=1920&originHeight=1024')] opacity-[0.03] mix-blend-overlay" />
         </div>
 
-        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-          {/* Centered Ball - Main Focus */}
-          <motion.div
-            ref={ballRef}
-            style={{ 
-              x: mouseX,
-              y: useMotionTemplate`calc(${mouseY}px + ${ballY}px)`,
-              scale: ballScale
-            }}
-            animate={{ 
-              rotate: [0, 360]
-            }}
-            transition={{ 
-              rotate: { duration: 20, repeat: Infinity, ease: "linear" }
-            }}
-            className="relative w-48 h-48 lg:w-80 lg:h-80 mb-12"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary via-brandaccent to-primary rounded-full blur-3xl opacity-60 animate-pulse" />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary to-brandaccent rounded-full shadow-2xl" />
-            <div className="absolute inset-2 bg-gradient-to-br from-primary/80 to-brandaccent/80 rounded-full" />
-          </motion.div>
+        {/* Ball Layer - Lower z-index */}
+        <motion.div
+          ref={ballRef}
+          style={{ 
+            y: ballY,
+            scale: ballScale
+          }}
+          animate={{ 
+            rotate: [0, 360]
+          }}
+          transition={{ 
+            rotate: { duration: 20, repeat: Infinity, ease: "linear" }
+          }}
+          className="absolute w-48 h-48 lg:w-80 lg:h-80 z-5"
+        >
+          {/* Pickleball with holes */}
+          <svg viewBox="0 0 200 200" className="w-full h-full">
+            {/* Main ball gradient */}
+            <defs>
+              <radialGradient id="ballGradient" cx="35%" cy="35%">
+                <stop offset="0%" stopColor="#BEEB00" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#E6F47A" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#BEEB00" stopOpacity="0.7" />
+              </radialGradient>
+              <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" floodOpacity="0.3" />
+              </filter>
+            </defs>
+            
+            {/* Ball body */}
+            <circle cx="100" cy="100" r="95" fill="url(#ballGradient)" filter="url(#shadow)" />
+            
+            {/* Pickleball holes - arranged in pattern */}
+            {/* Top row */}
+            <circle cx="70" cy="50" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="100" cy="40" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="130" cy="50" r="6" fill="#0D1A1A" opacity="0.6" />
+            
+            {/* Middle rows */}
+            <circle cx="50" cy="80" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="80" cy="75" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="120" cy="75" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="150" cy="80" r="6" fill="#0D1A1A" opacity="0.6" />
+            
+            {/* Center holes */}
+            <circle cx="60" cy="110" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="100" cy="100" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="140" cy="110" r="6" fill="#0D1A1A" opacity="0.6" />
+            
+            {/* Lower middle rows */}
+            <circle cx="50" cy="140" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="80" cy="135" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="120" cy="135" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="150" cy="140" r="6" fill="#0D1A1A" opacity="0.6" />
+            
+            {/* Bottom row */}
+            <circle cx="70" cy="160" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="100" cy="170" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="130" cy="160" r="6" fill="#0D1A1A" opacity="0.6" />
+            
+            {/* Highlight */}
+            <ellipse cx="70" cy="60" rx="20" ry="25" fill="white" opacity="0.15" />
+          </svg>
+        </motion.div>
 
-          {/* Minimal Text Below Ball */}
+        {/* Text Layer - Higher z-index */}
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+          {/* Minimal Text */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -169,7 +196,7 @@ export default function HomePage() {
       <Marquee text="ENGINEERED FOR VICTORY" />
 
       {/* --- INTRO STATEMENT --- */}
-      <section className="py-32 lg:py-48 bg-background relative overflow-hidden">
+      <section className="py-16 lg:py-24 bg-background relative overflow-hidden">
         <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end">
             <SectionHeading className="text-foreground leading-[0.95]">
@@ -249,7 +276,7 @@ export default function HomePage() {
       </section>
 
       {/* --- PARALLAX BREATHER --- */}
-      <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center">
+      <section className="relative w-full h-[60vh] overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-secondary">
           <motion.div 
             style={{ y: useTransform(scrollYProgress, [0.5, 1], [-100, 100]) }}
@@ -280,7 +307,7 @@ export default function HomePage() {
       </section>
 
       {/* --- TECHNICAL SPECIFICATIONS --- */}
-      <section className="py-32 bg-background relative">
+      <section className="py-16 bg-background relative">
         <div className="w-full max-w-[120rem] mx-auto px-6 lg:px-12">
           <div className="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
             <SectionHeading className="text-foreground">
@@ -316,7 +343,7 @@ export default function HomePage() {
       </section>
 
       {/* --- CTA SECTION --- */}
-      <section className="py-32 bg-secondary text-secondary-foreground relative overflow-hidden">
+      <section className="py-16 bg-secondary text-secondary-foreground relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-brandaccent/5 rounded-full blur-[150px]" />
         
         <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 text-center relative z-10">
