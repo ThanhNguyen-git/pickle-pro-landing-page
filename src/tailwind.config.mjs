@@ -23,16 +23,16 @@ export default {
                 paragraph: "'Inter', 'Segoe UI', sans-serif"
             },
             colors: {
-                brandaccent: '#E6F47A',
-                subtlebackground: '#DFF7B9',
-                foreground: '#0D1A1A',
+                brandaccent: '#2563EB',
+                subtlebackground: '#F3F4F6',
+                foreground: '#000000',
                 destructive: '#DF3131',
                 destructiveforeground: '#FFFFFF',
-                background: '#E9F6D9',
-                secondary: '#0D1A1A',
-                'secondary-foreground': '#E9F6D9',
-                'primary-foreground': '#0D1A1A',
-                primary: '#BEEB00'
+                background: '#FFFFFF',
+                secondary: '#FFFFFF',
+                'secondary-foreground': '#000000',
+                'primary-foreground': '#FFFFFF',
+                primary: '#2563EB'
             },
         },
     },

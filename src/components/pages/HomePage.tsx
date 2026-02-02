@@ -11,7 +11,7 @@ import { ArrowRight, Check, Star, Zap, Shield, Wind } from 'lucide-react';
 
 const Marquee = ({ text }: { text: string }) => {
   return (
-    <div className="relative flex overflow-hidden py-6 bg-brandaccent text-secondary select-none">
+    <div className="relative flex overflow-hidden py-6 bg-brandaccent text-white select-none">
       <motion.div
         className="flex whitespace-nowrap font-heading text-4xl lg:text-6xl font-bold uppercase tracking-tighter"
         animate={{ x: [0, -1000] }}
@@ -82,16 +82,15 @@ export default function HomePage() {
   const ballY = useTransform(smoothProgress, [0, 0.3], [0, 500]);
 
   return (
-    <div ref={containerRef} className="bg-background min-h-screen w-full overflow-clip selection:bg-brandaccent selection:text-secondary">
+    <div ref={containerRef} className="bg-background min-h-screen w-full overflow-clip selection:bg-brandaccent selection:text-white">
       <Header />
 
       {/* --- HERO SECTION --- */}
-      <section ref={heroRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-secondary">
+      <section ref={heroRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-white">
         {/* Background Atmosphere */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-primary/20 rounded-full blur-[120px] opacity-40 animate-pulse" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-brandaccent/10 rounded-full blur-[100px] opacity-30" />
-          <div className="absolute inset-0 bg-[url('https://static.wixstatic.com/media/7765ff_4d59690fb6a44ced8face420ff752c08~mv2.png?originWidth=1920&originHeight=1024')] opacity-[0.03] mix-blend-overlay" />
+          <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-brandaccent/5 rounded-full blur-[120px] opacity-60" />
+          <div className="absolute bottom-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-brandaccent/3 rounded-full blur-[100px] opacity-40" />
         </div>
 
         {/* Ball Layer - Lower z-index */}
@@ -114,12 +113,12 @@ export default function HomePage() {
             {/* Main ball gradient */}
             <defs>
               <radialGradient id="ballGradient" cx="35%" cy="35%">
-                <stop offset="0%" stopColor="#BEEB00" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#E6F47A" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#BEEB00" stopOpacity="0.7" />
+                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.95" />
+                <stop offset="50%" stopColor="#3B82F6" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#1E40AF" stopOpacity="0.8" />
               </radialGradient>
               <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-                <feDropShadow dx="0" dy="4" stdDeviation="8" floodOpacity="0.3" />
+                <feDropShadow dx="0" dy="4" stdDeviation="8" floodOpacity="0.15" />
               </filter>
             </defs>
             
@@ -128,34 +127,34 @@ export default function HomePage() {
             
             {/* Pickleball holes - arranged in pattern */}
             {/* Top row */}
-            <circle cx="70" cy="50" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="100" cy="40" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="130" cy="50" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="70" cy="50" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="100" cy="40" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="130" cy="50" r="6" fill="#000000" opacity="0.4" />
             
             {/* Middle rows */}
-            <circle cx="50" cy="80" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="80" cy="75" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="120" cy="75" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="150" cy="80" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="50" cy="80" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="80" cy="75" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="120" cy="75" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="150" cy="80" r="6" fill="#000000" opacity="0.4" />
             
             {/* Center holes */}
-            <circle cx="60" cy="110" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="100" cy="100" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="140" cy="110" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="60" cy="110" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="100" cy="100" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="140" cy="110" r="6" fill="#000000" opacity="0.4" />
             
             {/* Lower middle rows */}
-            <circle cx="50" cy="140" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="80" cy="135" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="120" cy="135" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="150" cy="140" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="50" cy="140" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="80" cy="135" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="120" cy="135" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="150" cy="140" r="6" fill="#000000" opacity="0.4" />
             
             {/* Bottom row */}
-            <circle cx="70" cy="160" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="100" cy="170" r="6" fill="#0D1A1A" opacity="0.6" />
-            <circle cx="130" cy="160" r="6" fill="#0D1A1A" opacity="0.6" />
+            <circle cx="70" cy="160" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="100" cy="170" r="6" fill="#000000" opacity="0.4" />
+            <circle cx="130" cy="160" r="6" fill="#000000" opacity="0.4" />
             
             {/* Highlight */}
-            <ellipse cx="70" cy="60" rx="20" ry="25" fill="white" opacity="0.15" />
+            <ellipse cx="70" cy="60" rx="20" ry="25" fill="white" opacity="0.2" />
           </svg>
         </motion.div>
 
@@ -168,11 +167,11 @@ export default function HomePage() {
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="text-left max-w-2xl px-6 lg:px-12"
           >
-            <h1 className="font-heading text-5xl lg:text-7xl text-secondary-foreground leading-tight tracking-tight mb-4">
-              Clean <span className="text-brandaccent">Fresh Air</span>
+            <h1 className="font-heading text-5xl lg:text-7xl text-foreground leading-tight tracking-tight mb-4">
+              Premium <span className="text-brandaccent">Pickleball</span>
             </h1>
-            <p className="font-paragraph text-base lg:text-lg text-secondary-foreground/60">
-              Experience next-generation air purification
+            <p className="font-paragraph text-base lg:text-lg text-foreground/60">
+              Experience next-generation performance and precision
             </p>
           </motion.div>
         </div>
@@ -184,7 +183,7 @@ export default function HomePage() {
           transition={{ delay: 1.5, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
         >
-          <span className="text-secondary-foreground/40 text-xs font-heading tracking-widest uppercase">Scroll to explore</span>
+          <span className="text-foreground/40 text-xs font-heading tracking-widest uppercase">Scroll to explore</span>
           <motion.div 
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -196,15 +195,15 @@ export default function HomePage() {
       <Marquee text="ENGINEERED FOR VICTORY" />
 
       {/* --- INTRO STATEMENT --- */}
-      <section className="py-16 lg:py-24 bg-background relative overflow-hidden">
+      <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
         <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end">
             <SectionHeading className="text-foreground leading-[0.95]">
               Redefining<br />
-              <span className="text-primary opacity-80">Aerodynamics.</span>
+              <span className="text-brandaccent opacity-90">Performance.</span>
             </SectionHeading>
             <div className="lg:pl-12">
-              <p className="font-paragraph text-xl lg:text-2xl text-foreground/80 leading-relaxed">
+              <p className="font-paragraph text-xl lg:text-2xl text-foreground/70 leading-relaxed">
                 We stripped away the unnecessary to focus on what matters: pure performance. Our proprietary polymer blend ensures consistent bounce in any temperature, while the precision-drilled holes minimize wind resistance.
               </p>
             </div>
@@ -213,7 +212,7 @@ export default function HomePage() {
       </section>
 
       {/* --- FEATURES GRID --- */}
-      <section id="features" className="relative bg-secondary text-secondary-foreground py-24 lg:py-32">
+      <section id="features" className="relative bg-subtlebackground text-foreground py-24 lg:py-32">
         <div className="relative w-full max-w-[120rem] mx-auto px-6 lg:px-12">
           {isLoading ? (
             <div className="h-96 flex items-center justify-center">
@@ -222,7 +221,7 @@ export default function HomePage() {
           ) : features.length > 0 ? (
             <div>
               <div className="mb-16">
-                <SectionHeading className="text-secondary-foreground">
+                <SectionHeading className="text-foreground">
                   Feature<br />Highlights
                 </SectionHeading>
               </div>
@@ -235,47 +234,47 @@ export default function HomePage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-brandaccent/50 transition-all duration-300 hover:bg-white/8"
+                    className="group relative rounded-2xl overflow-hidden bg-white border border-foreground/10 hover:border-brandaccent/50 transition-all duration-300 hover:shadow-lg hover:shadow-brandaccent/10"
                   >
                     {/* Image Container */}
-                    <div className="relative w-full aspect-video overflow-hidden bg-[#1a2a2a]">
+                    <div className="relative w-full aspect-video overflow-hidden bg-subtlebackground">
                       <Image
                         src={feature.featureImage || "https://static.wixstatic.com/media/7765ff_0d764ba6fd504b5e99a802b62e20be20~mv2.png?originWidth=768&originHeight=768"}
                         alt={feature.featureTitle || "Feature Image"}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       {/* Overlay Gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
                     </div>
 
                     {/* Content Container */}
                     <div className="p-8 lg:p-10">
                       <div className="flex items-center gap-3 mb-4">
                         <span className="font-heading text-sm text-brandaccent uppercase tracking-widest font-bold">0{index + 1}</span>
-                        <div className="h-px flex-1 bg-white/10" />
+                        <div className="h-px flex-1 bg-foreground/10" />
                       </div>
                       
-                      <h3 className="font-heading text-2xl lg:text-3xl text-white mb-4 leading-tight">
+                      <h3 className="font-heading text-2xl lg:text-3xl text-foreground mb-4 leading-tight">
                         {feature.featureTitle}
                       </h3>
                       
-                      <p className="font-paragraph text-base lg:text-lg text-white/70 leading-relaxed mb-6">
+                      <p className="font-paragraph text-base lg:text-lg text-foreground/60 leading-relaxed mb-6">
                         {feature.featureDescription}
                       </p>
 
                       {/* Specs Row */}
                       {(feature.specificationValue || feature.benefitHighlight) && (
-                        <div className="grid grid-cols-2 gap-6 pt-6 border-t border-white/10">
+                        <div className="grid grid-cols-2 gap-6 pt-6 border-t border-foreground/10">
                           {feature.specificationValue && (
                             <div>
                               <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-2">Specification</p>
-                              <p className="font-heading text-xl lg:text-2xl text-white font-bold">{feature.specificationValue}</p>
+                              <p className="font-heading text-xl lg:text-2xl text-foreground font-bold">{feature.specificationValue}</p>
                             </div>
                           )}
                           {feature.benefitHighlight && (
                             <div>
                               <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-2">Benefit</p>
-                              <p className="font-heading text-xl lg:text-2xl text-white font-bold">{feature.benefitHighlight}</p>
+                              <p className="font-heading text-xl lg:text-2xl text-foreground font-bold">{feature.benefitHighlight}</p>
                             </div>
                           )}
                         </div>
@@ -287,7 +286,7 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="py-32 text-center">
-              <p className="text-secondary-foreground/50">No features available</p>
+              <p className="text-foreground/50">No features available</p>
             </div>
           )}
         </div>
@@ -295,7 +294,7 @@ export default function HomePage() {
 
       {/* --- PARALLAX BREATHER --- */}
       <section className="relative w-full h-[60vh] overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 bg-secondary">
+        <div className="absolute inset-0 bg-white">
           <motion.div 
             style={{ y: useTransform(scrollYProgress, [0.5, 1], [-100, 100]) }}
             className="absolute inset-0"
@@ -303,10 +302,10 @@ export default function HomePage() {
             <Image
               src="https://static.wixstatic.com/media/7765ff_f2aff30f17874817b771762bfe0dc0c7~mv2.png?originWidth=1920&originHeight=1152"
               alt="Pickleball Lifestyle"
-              className="w-full h-full object-cover opacity-40 scale-110"
+              className="w-full h-full object-cover opacity-20 scale-110"
             />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-b from-secondary via-transparent to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
         </div>
         
         <div className="relative z-10 text-center px-6">
@@ -316,8 +315,8 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="font-heading text-5xl lg:text-8xl text-white mb-6">Play Without Limits</h2>
-            <p className="font-paragraph text-xl text-white/70 max-w-2xl mx-auto">
+            <h2 className="font-heading text-5xl lg:text-8xl text-foreground mb-6">Play Without Limits</h2>
+            <p className="font-paragraph text-xl text-foreground/60 max-w-2xl mx-auto">
               Designed for those who demand perfection in every shot.
             </p>
           </motion.div>
@@ -325,7 +324,7 @@ export default function HomePage() {
       </section>
 
       {/* --- TECHNICAL SPECIFICATIONS --- */}
-      <section className="py-16 bg-background relative">
+      <section className="py-16 bg-white relative">
         <div className="w-full max-w-[120rem] mx-auto px-6 lg:px-12">
           <div className="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
             <SectionHeading className="text-foreground">
@@ -340,7 +339,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-foreground/10 border border-foreground/10 rounded-[2rem] overflow-hidden">
             {features.slice(0, 4).map((feature, i) => (
-              <div key={i} className="bg-background p-10 hover:bg-subtlebackground transition-colors duration-500 group">
+              <div key={i} className="bg-white p-10 hover:bg-subtlebackground transition-colors duration-500 group">
                 <div className="mb-8 w-12 h-12 rounded-full bg-brandaccent/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   {i === 0 ? <Wind className="w-6 h-6 text-foreground" /> : 
                    i === 1 ? <Shield className="w-6 h-6 text-foreground" /> :
@@ -361,15 +360,15 @@ export default function HomePage() {
       </section>
 
       {/* --- CTA SECTION --- */}
-      <section className="py-16 bg-secondary text-secondary-foreground relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-brandaccent/5 rounded-full blur-[150px]" />
+      <section className="py-16 bg-foreground text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-brandaccent/10 rounded-full blur-[150px]" />
         
         <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 text-center relative z-10">
           <h2 className="font-heading text-6xl lg:text-9xl mb-12 tracking-tighter">
-            Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-brandaccent to-primary">Dominate?</span>
+            Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-brandaccent to-blue-400">Dominate?</span>
           </h2>
           <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-            <button className="px-12 py-6 bg-brandaccent text-secondary text-xl font-heading font-bold rounded-full hover:bg-white transition-colors w-full md:w-auto">
+            <button className="px-12 py-6 bg-brandaccent text-white text-xl font-heading font-bold rounded-full hover:bg-blue-600 transition-colors w-full md:w-auto">
               Get Yours Now
             </button>
             <button className="px-12 py-6 border border-white/20 text-white text-xl font-heading font-bold rounded-full hover:bg-white/10 transition-colors w-full md:w-auto">
@@ -395,7 +394,7 @@ function FeatureTextBlock({ feature, index, onInView }: { feature: BallFeatures;
   }, [isInView, onInView]);
 
   return (
-    <div ref={ref} className="min-h-screen flex items-center px-6 lg:px-24 py-24 border-l border-white/5">
+    <div ref={ref} className="min-h-screen flex items-center px-6 lg:px-24 py-24 border-l border-foreground/10">
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -404,15 +403,15 @@ function FeatureTextBlock({ feature, index, onInView }: { feature: BallFeatures;
         className="max-w-xl"
       >
         <div className="flex items-center gap-4 mb-6">
-          <span className="font-heading text-6xl text-white/10 font-bold">0{index + 1}</span>
-          <div className="h-px flex-1 bg-white/10" />
+          <span className="font-heading text-6xl text-foreground/10 font-bold">0{index + 1}</span>
+          <div className="h-px flex-1 bg-foreground/10" />
         </div>
         
-        <h3 className="font-heading text-4xl lg:text-6xl text-white mb-8 leading-tight">
+        <h3 className="font-heading text-4xl lg:text-6xl text-foreground mb-8 leading-tight">
           {feature.featureTitle}
         </h3>
         
-        <p className="font-paragraph text-xl text-white/60 leading-relaxed mb-10">
+        <p className="font-paragraph text-xl text-foreground/60 leading-relaxed mb-10">
           {feature.featureDescription}
         </p>
 
@@ -420,12 +419,12 @@ function FeatureTextBlock({ feature, index, onInView }: { feature: BallFeatures;
           <div className="grid grid-cols-2 gap-8">
             <div>
               <p className="font-heading text-sm text-brandaccent uppercase tracking-widest mb-2">Spec</p>
-              <p className="font-paragraph text-2xl text-white">{feature.specificationValue}</p>
+              <p className="font-paragraph text-2xl text-foreground">{feature.specificationValue}</p>
             </div>
             {feature.benefitHighlight && (
               <div>
                 <p className="font-heading text-sm text-brandaccent uppercase tracking-widest mb-2">Benefit</p>
-                <p className="font-paragraph text-2xl text-white">{feature.benefitHighlight}</p>
+                <p className="font-paragraph text-2xl text-foreground">{feature.benefitHighlight}</p>
               </div>
             )}
           </div>
