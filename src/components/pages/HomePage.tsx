@@ -211,8 +211,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- FEATURES GRID --- */}
-      <section id="features" className="relative bg-subtlebackground text-foreground py-24 lg:py-32">
+      {/* --- FEATURES SIDE-BY-SIDE --- */}
+      <section id="features" className="relative bg-white text-foreground py-24 lg:py-32">
         <div className="relative w-full max-w-[120rem] mx-auto px-6 lg:px-12">
           {isLoading ? (
             <div className="h-96 flex items-center justify-center">
@@ -220,66 +220,92 @@ export default function HomePage() {
             </div>
           ) : features.length > 0 ? (
             <div>
-              <div className="mb-16">
+              <div className="mb-20">
                 <SectionHeading className="text-foreground">
                   Feature<br />Highlights
                 </SectionHeading>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+              <div className="space-y-20 lg:space-y-32">
                 {features.map((feature, index) => (
                   <motion.div
                     key={feature._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="group relative rounded-2xl overflow-hidden bg-white border border-foreground/10 hover:border-brandaccent/50 transition-all duration-300 hover:shadow-lg hover:shadow-brandaccent/10"
+                    transition={{ duration: 0.6 }}
+                    className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center ${
+                      index % 2 === 1 ? "lg:grid-flow-dense" : ""
+                    }`}
                   >
                     {/* Image Container */}
-                    <div className="relative w-full aspect-video overflow-hidden bg-subtlebackground">
+                    <motion.div
+                      initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.8, delay: 0.1 }}
+                      className={`relative rounded-2xl overflow-hidden aspect-square bg-subtlebackground group ${
+                        index % 2 === 1 ? "lg:col-start-2" : ""
+                      }`}
+                    >
                       <Image
                         src={feature.featureImage || "https://static.wixstatic.com/media/7765ff_0d764ba6fd504b5e99a802b62e20be20~mv2.png?originWidth=768&originHeight=768"}
                         alt={feature.featureTitle || "Feature Image"}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       {/* Overlay Gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
-                    </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+                    </motion.div>
 
                     {/* Content Container */}
-                    <div className="p-8 lg:p-10">
-                      <div className="flex items-center gap-3 mb-4">
+                    <motion.div
+                      initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.8, delay: 0.2 }}
+                      className={`${index % 2 === 1 ? "lg:col-start-1" : ""}`}
+                    >
+                      <div className="flex items-center gap-3 mb-6">
                         <span className="font-heading text-sm text-brandaccent uppercase tracking-widest font-bold">0{index + 1}</span>
                         <div className="h-px flex-1 bg-foreground/10" />
                       </div>
                       
-                      <h3 className="font-heading text-2xl lg:text-3xl text-foreground mb-4 leading-tight">
+                      <h3 className="font-heading text-3xl lg:text-5xl text-foreground mb-6 leading-tight">
                         {feature.featureTitle}
                       </h3>
                       
-                      <p className="font-paragraph text-base lg:text-lg text-foreground/60 leading-relaxed mb-6">
+                      <p className="font-paragraph text-lg lg:text-xl text-foreground/60 leading-relaxed mb-8">
                         {feature.featureDescription}
                       </p>
 
                       {/* Specs Row */}
                       {(feature.specificationValue || feature.benefitHighlight) && (
-                        <div className="grid grid-cols-2 gap-6 pt-6 border-t border-foreground/10">
+                        <div className="grid grid-cols-2 gap-8 pt-8 border-t border-foreground/10">
                           {feature.specificationValue && (
-                            <div>
-                              <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-2">Specification</p>
-                              <p className="font-heading text-xl lg:text-2xl text-foreground font-bold">{feature.specificationValue}</p>
-                            </div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.6, delay: 0.3 }}
+                            >
+                              <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-3">Specification</p>
+                              <p className="font-heading text-2xl lg:text-3xl text-foreground font-bold">{feature.specificationValue}</p>
+                            </motion.div>
                           )}
                           {feature.benefitHighlight && (
-                            <div>
-                              <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-2">Benefit</p>
-                              <p className="font-heading text-xl lg:text-2xl text-foreground font-bold">{feature.benefitHighlight}</p>
-                            </div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.6, delay: 0.4 }}
+                            >
+                              <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-3">Benefit</p>
+                              <p className="font-heading text-2xl lg:text-3xl text-foreground font-bold">{feature.benefitHighlight}</p>
+                            </motion.div>
                           )}
                         </div>
                       )}
-                    </div>
+                    </motion.div>
                   </motion.div>
                 ))}
               </div>
