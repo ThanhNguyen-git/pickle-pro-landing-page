@@ -45,7 +45,6 @@ const SectionHeading = ({ children, className = "" }: { children: React.ReactNod
 export default function HomePage() {
   const [features, setFeatures] = useState<BallFeatures[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -213,64 +212,82 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- STICKY FEATURES SHOWCASE --- */}
-      <section id="features" className="relative bg-secondary text-secondary-foreground py-24 lg:py-0">
-        <div className="relative w-full max-w-[120rem] mx-auto">
+      {/* --- FEATURES GRID --- */}
+      <section id="features" className="relative bg-secondary text-secondary-foreground py-24 lg:py-32">
+        <div className="relative w-full max-w-[120rem] mx-auto px-6 lg:px-12">
           {isLoading ? (
-            <div className="h-screen flex items-center justify-center">
+            <div className="h-96 flex items-center justify-center">
               <div className="w-12 h-12 border-4 border-brandaccent border-t-transparent rounded-full animate-spin" />
             </div>
           ) : features.length > 0 ? (
-            <div className="lg:flex">
-              {/* Sticky Image Container */}
-              <div className="hidden lg:flex lg:w-1/2 h-screen sticky top-0 items-center justify-center p-12 lg:p-24">
-                <div className="relative w-full aspect-square rounded-[3rem] overflow-hidden bg-[#1a2a2a] border border-white/5 shadow-2xl">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={activeFeatureIndex}
-                      initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }}
-                      transition={{ duration: 0.6, ease: "easeInOut" }}
-                      className="absolute inset-0"
-                    >
+            <div>
+              <div className="mb-16">
+                <SectionHeading className="text-secondary-foreground">
+                  Feature<br />Highlights
+                </SectionHeading>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                {features.map((feature, index) => (
+                  <motion.div
+                    key={feature._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-brandaccent/50 transition-all duration-300 hover:bg-white/8"
+                  >
+                    {/* Image Container */}
+                    <div className="relative w-full aspect-video overflow-hidden bg-[#1a2a2a]">
                       <Image
-                        src={features[activeFeatureIndex]?.featureImage || "https://static.wixstatic.com/media/7765ff_0d764ba6fd504b5e99a802b62e20be20~mv2.png?originWidth=768&originHeight=768"}
-                        alt={features[activeFeatureIndex]?.featureTitle || "Feature Image"}
-                        className="w-full h-full object-cover"
+                        src={feature.featureImage || "https://static.wixstatic.com/media/7765ff_0d764ba6fd504b5e99a802b62e20be20~mv2.png?originWidth=768&originHeight=768"}
+                        alt={feature.featureTitle || "Feature Image"}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       {/* Overlay Gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent" />
-                      
-                      {/* Floating Badge */}
-                      <div className="absolute bottom-8 left-8 right-8">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10">
-                          <Zap className="w-4 h-4 text-brandaccent" />
-                          <span className="font-heading text-sm text-white tracking-wide">
-                            {features[activeFeatureIndex]?.benefitHighlight || "High Performance"}
-                          </span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
+                    </div>
 
-              {/* Scrolling Text Content */}
-              <div className="w-full lg:w-1/2 relative z-10">
-                {features.map((feature, index) => (
-                  <FeatureTextBlock 
-                    key={feature._id} 
-                    feature={feature} 
-                    index={index} 
-                    onInView={() => setActiveFeatureIndex(index)} 
-                  />
+                    {/* Content Container */}
+                    <div className="p-8 lg:p-10">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="font-heading text-sm text-brandaccent uppercase tracking-widest font-bold">0{index + 1}</span>
+                        <div className="h-px flex-1 bg-white/10" />
+                      </div>
+                      
+                      <h3 className="font-heading text-2xl lg:text-3xl text-white mb-4 leading-tight">
+                        {feature.featureTitle}
+                      </h3>
+                      
+                      <p className="font-paragraph text-base lg:text-lg text-white/70 leading-relaxed mb-6">
+                        {feature.featureDescription}
+                      </p>
+
+                      {/* Specs Row */}
+                      {(feature.specificationValue || feature.benefitHighlight) && (
+                        <div className="grid grid-cols-2 gap-6 pt-6 border-t border-white/10">
+                          {feature.specificationValue && (
+                            <div>
+                              <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-2">Specification</p>
+                              <p className="font-heading text-xl lg:text-2xl text-white font-bold">{feature.specificationValue}</p>
+                            </div>
+                          )}
+                          {feature.benefitHighlight && (
+                            <div>
+                              <p className="font-heading text-xs text-brandaccent uppercase tracking-widest mb-2">Benefit</p>
+                              <p className="font-heading text-xl lg:text-2xl text-white font-bold">{feature.benefitHighlight}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
           ) : (
             <div className="py-32 text-center">
-              <p className="text-secondary-foreground/50">Features loading...</p>
+              <p className="text-secondary-foreground/50">No features available</p>
             </div>
           )}
         </div>
